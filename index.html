@@ -707,6 +707,15 @@ body {
 body,.file-card{-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision;}
 .zb-shul-img{image-rendering:-webkit-optimize-contrast;}
 .zb-special-text{text-shadow:0 2px 2px rgba(0,0,0,.85);}
+.zb-slide-zmanim{padding:30px 40px;}
+.zb-slide-zmanim > * + *{margin-top:44px;}
+.zb-slide-zmanim .zb-slide-title{font-size:130px;line-height:1.1;}
+.zb-slide-zmanim .zb-clock{font-size:250px;line-height:1;}
+.zb-slide-zmanim .zb-grid{max-width:1840px;}
+.zb-slide-zmanim .zb-cell{padding:30px 14px;margin:10px;border-radius:20px;}
+.zb-slide-zmanim .zb-cell-label{font-size:40px;}
+.zb-slide-zmanim .zb-cell-time{font-size:96px;margin-top:10px;}
+.zb-slide-zmanim .zb-note{font-size:30px;}
 </style>
 </head>
 <body>
@@ -1225,7 +1234,7 @@ body,.file-card{-webkit-font-smoothing:antialiased;text-rendering:geometricPreci
     h += '<div class="zb-special" id="zb-special-wrap" style="display:none"><svg class="zb-orn" viewBox="0 0 160 28" width="160" height="28" aria-hidden="true"><defs><linearGradient id="zbg" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="112" y2="0"><stop offset="0" stop-color="#e6c26a" stop-opacity="0.15"/><stop offset="1" stop-color="#e6c26a"/></linearGradient></defs><path d="M0 14 H112" stroke="url(#zbg)" stroke-width="2.5" fill="none"/><path d="M112 14 C120 4 132 4 138 14 C132 24 120 24 112 14 Z" fill="#e6c26a"/><path d="M144 14 L152 8 L160 14 L152 20 Z" fill="#e6c26a"/></svg><span class="zb-special-text" id="zb-special"></span><svg class="zb-orn zb-orn-r" viewBox="0 0 160 28" width="160" height="28" aria-hidden="true"><defs><linearGradient id="zbg" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="112" y2="0"><stop offset="0" stop-color="#e6c26a" stop-opacity="0.15"/><stop offset="1" stop-color="#e6c26a"/></linearGradient></defs><path d="M0 14 H112" stroke="url(#zbg)" stroke-width="2.5" fill="none"/><path d="M112 14 C120 4 132 4 138 14 C132 24 120 24 112 14 Z" fill="#e6c26a"/><path d="M144 14 L152 8 L160 14 L152 20 Z" fill="#e6c26a"/></svg></div>';
     h += '<div class="zb-hero-yechi">\u05D9\u05D7\u05D9 \u05D0\u05D3\u05D5\u05E0\u05E0\u05D5 \u05DE\u05D5\u05E8\u05E0\u05D5 \u05D5\u05E8\u05D1\u05D9\u05E0\u05D5 \u05DE\u05DC\u05DA \u05D4\u05DE\u05E9\u05D9\u05D7 \u05DC\u05E2\u05D5\u05DC\u05DD \u05D5\u05E2\u05D3</div>';
     h += "</section>";
-    h += '<section class="zb-slide"><div class="zb-slide-title">\u05D6\u05DE\u05E0\u05D9 \u05D4\u05D9\u05D5\u05DD</div>';
+    h += '<section class="zb-slide zb-slide-zmanim"><div class="zb-slide-title">\u05D6\u05DE\u05E0\u05D9 \u05D4\u05D9\u05D5\u05DD</div>';
     h += '<div class="zb-clock zb-clock-small" dir="ltr" id="zb-clock"></div><div class="zb-grid">';
     for (var i = 0; i < ZMANIM.length; i++) {
       h += '<div class="zb-cell"><div class="zb-cell-label">' + esc(ZMANIM[i].label) + '</div><div class="zb-cell-time" id="zb-z-' + ZMANIM[i].key + '" dir="ltr">\u2014</div></div>';
