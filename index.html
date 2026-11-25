@@ -739,6 +739,18 @@ body,.file-card{-webkit-font-smoothing:antialiased;text-rendering:geometricPreci
 .zb-slide-shabbat .zb-candle{overflow:visible;position:absolute;bottom:50px;margin:0;pointer-events:none;}
 .zb-slide-shabbat .zb-candle-l{left:90px;}
 .zb-slide-shabbat .zb-candle-r{right:90px;}
+.zb-slide-hy{padding:30px 60px;}
+.zb-slide-hy > * + *{margin-top:26px;}
+.zb-slide-hy .zb-slide-title,.zb-slide-hy #zb-hy-title{font-size:120px;line-height:1.1;}
+.zb-slide-hy .zb-zorn{display:block;width:640px;height:40px;opacity:.9;margin-top:6px;}
+.zb-hy-date{font-family:"Frank Ruhl Libre",Georgia,serif;font-weight:700;font-size:60px;color:#e6c26a;text-align:center;text-shadow:0 2px 2px rgba(0,0,0,.8);margin-top:18px;}
+.zb-hy-frame{position:relative;box-sizing:border-box;width:100%;max-width:1760px;padding:34px 56px;background:rgba(9,15,30,0.78);border:2px solid rgba(230,194,106,0.85);border-radius:4px;box-shadow:inset 0 0 0 10px rgba(9,15,30,0.92),inset 0 0 0 12px rgba(230,194,106,0.55),0 6px 28px rgba(0,0,0,0.6),0 0 42px rgba(230,194,106,0.12);}
+.zb-fc{position:absolute;width:44px;height:44px;border:0 solid #e6c26a;}
+.zb-fc-tl{top:-2px;left:-2px;border-top-width:7px;border-left-width:7px;}
+.zb-fc-tr{top:-2px;right:-2px;border-top-width:7px;border-right-width:7px;}
+.zb-fc-bl{bottom:-2px;left:-2px;border-bottom-width:7px;border-left-width:7px;}
+.zb-fc-br{bottom:-2px;right:-2px;border-bottom-width:7px;border-right-width:7px;}
+.zb-slide-hy .zb-hayomyom{max-width:none;width:100%;height:520px;max-height:520px;overflow:hidden;background:none;border:0;border-radius:0;padding:0;font-size:56px;line-height:1.55;color:#f4ecd8;text-align:right;}
 </style>
 </head>
 <body>
@@ -1288,8 +1300,10 @@ body,.file-card{-webkit-font-smoothing:antialiased;text-rendering:geometricPreci
     h += "</div>";
     h += '<svg class="zb-candle zb-candle-l" viewBox="0 0 200 520" width="230" height="600" aria-hidden="true"><defs><linearGradient id="zbc-gold" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8f6a22"/><stop offset="0.45" stop-color="#f1d98f"/><stop offset="1" stop-color="#a87b2a"/></linearGradient><linearGradient id="zbc-ivory" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#cdbb8c"/><stop offset="0.45" stop-color="#f7edd2"/><stop offset="1" stop-color="#cdbb8c"/></linearGradient><linearGradient id="zbc-flame" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#e08a1e"/><stop offset="0.5" stop-color="#ffc94d"/><stop offset="1" stop-color="#fff1b0"/></linearGradient><radialGradient id="zbc-glow"><stop offset="0" stop-color="#ffd27a" stop-opacity="0.55"/><stop offset="1" stop-color="#ffd27a" stop-opacity="0"/></radialGradient></defs><circle cx="100" cy="64" r="95" fill="url(#zbc-glow)"><animate attributeName="opacity" values="0.75;1;0.7;0.95;0.8" dur="2.3s" begin="0s" repeatCount="indefinite"/></circle><g transform="translate(100,96)"><g><animateTransform attributeName="transform" type="scale" values="1 1;0.93 1.08;1.04 0.94;0.97 1.05;1 1" dur="1.9s" begin="0s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" additive="sum" type="skewX" values="0;4;-3;2;-1;0" dur="2.7s" begin="0s" repeatCount="indefinite"/><path d="M0 -68 C20 -42 21 -16 0 0 C-21 -16 -20 -42 0 -68 Z" fill="url(#zbc-flame)"/><path d="M0 -38 C9 -24 9 -10 0 -2 C-9 -10 -9 -24 0 -38 Z" fill="#fff8dc" opacity="0.9"/></g></g></g><rect x="98.5" y="94" width="3" height="10" fill="#3a2f1e"/><rect x="86" y="102" width="28" height="200" rx="4" fill="url(#zbc-ivory)"/><path d="M74 300 H126 L118 320 H82 Z" fill="url(#zbc-gold)"/><rect x="93" y="320" width="14" height="112" fill="url(#zbc-gold)"/><ellipse cx="100" cy="352" rx="18" ry="8" fill="url(#zbc-gold)"/><ellipse cx="100" cy="398" rx="15" ry="7" fill="url(#zbc-gold)"/><path d="M62 500 C62 470 84 452 100 430 C116 452 138 470 138 500 Z" fill="url(#zbc-gold)"/><rect x="48" y="498" width="104" height="14" rx="6" fill="url(#zbc-gold)"/></svg><svg class="zb-candle zb-candle-r" viewBox="0 0 200 520" width="230" height="600" aria-hidden="true"><circle cx="100" cy="64" r="95" fill="url(#zbc-glow)"><animate attributeName="opacity" values="0.75;1;0.7;0.95;0.8" dur="2.3s" begin="-0.9s" repeatCount="indefinite"/></circle><g transform="translate(100,96)"><g><animateTransform attributeName="transform" type="scale" values="1 1;0.93 1.08;1.04 0.94;0.97 1.05;1 1" dur="1.9s" begin="-0.9s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" additive="sum" type="skewX" values="0;4;-3;2;-1;0" dur="2.7s" begin="-0.9s" repeatCount="indefinite"/><path d="M0 -68 C20 -42 21 -16 0 0 C-21 -16 -20 -42 0 -68 Z" fill="url(#zbc-flame)"/><path d="M0 -38 C9 -24 9 -10 0 -2 C-9 -10 -9 -24 0 -38 Z" fill="#fff8dc" opacity="0.9"/></g></g></g><rect x="98.5" y="94" width="3" height="10" fill="#3a2f1e"/><rect x="86" y="102" width="28" height="200" rx="4" fill="url(#zbc-ivory)"/><path d="M74 300 H126 L118 320 H82 Z" fill="url(#zbc-gold)"/><rect x="93" y="320" width="14" height="112" fill="url(#zbc-gold)"/><ellipse cx="100" cy="352" rx="18" ry="8" fill="url(#zbc-gold)"/><ellipse cx="100" cy="398" rx="15" ry="7" fill="url(#zbc-gold)"/><path d="M62 500 C62 470 84 452 100 430 C116 452 138 470 138 500 Z" fill="url(#zbc-gold)"/><rect x="48" y="498" width="104" height="14" rx="6" fill="url(#zbc-gold)"/></svg>';
     h += "</section>";
-    h += '<section class="zb-slide"><div class="zb-slide-title" id="zb-hy-title">\u05D4\u05D9\u05D5\u05DD \u05D9\u05D5\u05DD</div>';
-    h += '<div class="zb-hayomyom" id="zb-hy-body">\u2014</div></section>';
+    h += '<section class="zb-slide zb-slide-hy"><div class="zb-slide-title" id="zb-hy-title">\u05D4\u05D9\u05D5\u05DD \u05D9\u05D5\u05DD</div>';
+    h += '<svg class="zb-zorn" viewBox="0 0 640 40" width="640" height="40" aria-hidden="true"><defs><linearGradient id="zbhl" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="262" y2="0"><stop offset="0" stop-color="#e6c26a" stop-opacity="0"/><stop offset="1" stop-color="#e6c26a"/></linearGradient><linearGradient id="zbhr" gradientUnits="userSpaceOnUse" x1="378" y1="0" x2="640" y2="0"><stop offset="0" stop-color="#e6c26a"/><stop offset="1" stop-color="#e6c26a" stop-opacity="0"/></linearGradient></defs><path d="M0 20 H262" stroke="url(#zbhl)" stroke-width="2.5" fill="none"/><path d="M378 20 H640" stroke="url(#zbhr)" stroke-width="2.5" fill="none"/><path d="M262 20 C270 8 284 8 292 20 C284 32 270 32 262 20 Z" fill="#e6c26a"/><path d="M378 20 C370 8 356 8 348 20 C356 32 370 32 378 20 Z" fill="#e6c26a"/><path d="M320 6 L334 20 L320 34 L306 20 Z" fill="#e6c26a"/><circle cx="300" cy="20" r="2.5" fill="#e6c26a"/><circle cx="340" cy="20" r="2.5" fill="#e6c26a"/></svg>';
+    h += '<div class="zb-hy-date" id="zb-hy-date"></div>';
+    h += '<div class="zb-hy-frame"><span class="zb-fc zb-fc-tl"></span><span class="zb-fc zb-fc-tr"></span><span class="zb-fc zb-fc-bl"></span><span class="zb-fc zb-fc-br"></span><div class="zb-hayomyom" id="zb-hy-body">\u2014</div></div></section>';
     var DEDICATION_MINIMAL = true; // true: show only the Rebbe line (no title, no phone). Set false to restore.
     h += '<section class="zb-slide">' + (DEDICATION_MINIMAL ? "" : '<div class="zb-slide-title">\u05D4\u05E7\u05D3\u05E9\u05D5\u05EA \u05DC\u05E2\u05D9\u05DC\u05D5\u05D9 \u05E0\u05E9\u05DE\u05D4</div>');
     if (DEDICATIONS.length === 0) {
@@ -1377,10 +1391,21 @@ body,.file-card{-webkit-font-smoothing:antialiased;text-rendering:geometricPreci
     setText("zb-shabbat-title", esc(dayState.parasha || "\u05E9\u05D1\u05EA"));
     setText("zb-candles", dayState.candles || "\u2014");
     setText("zb-havdalah", dayState.havdalah || "\u2014");
-    setText("zb-hy-title", "\u05D4\u05D9\u05D5\u05DD \u05D9\u05D5\u05DD" + (dayState.hebrew ? " \u2022 " + esc(dayState.hebrew) : ""));
+    setText("zb-hy-date", G_WEEKDAYS[mn.getDay()] + (dayState.hebrew ? " \u2022 " + esc(dayState.hebrew) : ""));
     var hyRaw = hayomyom_default[dayState.hyKey];
     var hy = hyRaw ? hyRaw.split("~").join(String.fromCharCode(10)) : hyRaw;
     setText("zb-hy-body", esc(hy || "\u05D0\u05D9\u05DF \u05E8\u05E9\u05D5\u05DE\u05D4 \u05D6\u05DE\u05D9\u05E0\u05D4 \u05DC\u05D4\u05D9\u05D5\u05DD."));
+    fitHy();
+  }
+  function fitHy() {
+    var el = document.getElementById("zb-hy-body");
+    if (!el) return;
+    var sz = 56;
+    el.style.fontSize = sz + "px";
+    while (sz > 24 && el.scrollHeight > el.clientHeight + 1) {
+      sz -= 2;
+      el.style.fontSize = sz + "px";
+    }
   }
   function tick() {
     var ds = dateStrOf(manilaNow());
