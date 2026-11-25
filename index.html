@@ -955,7 +955,7 @@ body {
   function refineFromZmanimIl(dateStr) {
     xhrJson("zmanim.json", function(data) {
       var z = data && data.data && data.data.zmanim;
-      var info = data && data.data && data.data.dateInfo;
+      var info = data && (data.dateInfo || data.data && data.data.dateInfo);
       var parts = dateStr.split("-");
       var expect = parts[2] + "/" + parts[1] + "/" + parts[0];
       if (!data || !data.success || !z || !info || info.gregorianDate !== expect) {
