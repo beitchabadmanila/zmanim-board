@@ -1,7 +1,7 @@
 name: Refresh zmanim
 on:
   schedule:
-    - cron: "15 16 * * *"
+    - cron: "30 17 * * *"
     - cron: "45 20 * * *"
   workflow_dispatch:
 permissions:
