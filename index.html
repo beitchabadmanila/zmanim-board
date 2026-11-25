@@ -1146,6 +1146,13 @@ body,.file-card{-webkit-font-smoothing:antialiased;text-rendering:geometricPreci
       sunrise: rise
     };
   }
+  // Offsets (minutes) between zmanim.org.il (Admor HaZaken, Manila) and the offline solar model.
+  // Re-calibrated from zmanim.json (refreshed daily); used for days without exact data (e.g. next Shabbat).
+  var CAL = { alot: -44, shma: -3, chatzot: 0, sunset: 2, tzeit: -3, candles: -15, hav: 30 };
+  function hmToMins(t) {
+    var a = String(t).split(":");
+    return (+a[0]) * 60 + (+a[1]);
+  }
   var dayState = {
     dateStr: "",
     times: {},
@@ -1174,17 +1181,18 @@ body,.file-card{-webkit-font-smoothing:antialiased;text-rendering:geometricPreci
     var zm = offlineZmanim(y, m, d);
     dayState.dateStr = dateStr;
     dayState.times = {
-      alot: minsToTime(zm.alot),
-      shma: minsToTime(zm.shma),
-      chatzot: minsToTime(zm.chatzot),
-      sunset: minsToTime(zm.sunset),
-      tzeit: minsToTime(zm.tzeit)
+      alot: minsToTime(zm.alot + CAL.alot),
+      shma: minsToTime(zm.shma + CAL.shma),
+      chatzot: minsToTime(zm.chatzot + CAL.chatzot),
+      sunset: minsToTime(zm.sunset + CAL.sunset),
+      tzeit: minsToTime(zm.tzeit + CAL.tzeit)
     };
-    dayState.sunsetMins = zm.sunset;
+    dayState.sunsetMins = zm.sunset + CAL.sunset;
+    dayState.exact = false;
     var mn = manilaNow();
     var nowMins = mn.getHours() * 60 + mn.getMinutes();
     var abs = g2abs(y, m, d);
-    if (nowMins > zm.sunset) abs += 1;
+    if (nowMins > dayState.sunsetMins) abs += 1;
     var h = abs2hebrew(abs);
     dayState.hebrew = hebrewDateStr(h);
     dayState.special = specialDays(h, abs);
@@ -1197,10 +1205,13 @@ body,.file-card{-webkit-font-smoothing:antialiased;text-rendering:geometricPreci
     var f = abs2greg(friAbs);
     var s = abs2greg(satAbs);
     var friSet = sunMinutes(f[0], f[1], f[2], 90.833, false) || 1044;
-    var satTzeit = sunMinutes(s[0], s[1], s[2], 90 + 8.5, false) || friSet + 1462 - 1440;
+    var satSet = sunMinutes(s[0], s[1], s[2], 90.833, false) || friSet + 1;
+    dayState.friSet = friSet;
+    dayState.satSet = satSet;
+    dayState.dow = dow;
     dayState.mevarchim = isMevarchim(satAbs);
-    dayState.candles = minsToTime(friSet - 18);
-    dayState.havdalah = minsToTime(satTzeit);
+    dayState.candles = minsToTime(friSet + CAL.candles);
+    dayState.havdalah = minsToTime(satSet + CAL.hav);
   }
   function abs2greg(abs) {
     var y = Math.floor((abs - 1) / 365.2425) + 1;
@@ -1245,46 +1256,68 @@ body,.file-card{-webkit-font-smoothing:antialiased;text-rendering:geometricPreci
     xhrJson("zmanim.json", function(data) {
       var z = data && data.data && data.data.zmanim;
       var info = data && (data.dateInfo || data.data && data.data.dateInfo);
-      var parts = dateStr.split("-");
-      var expect = parts[2] + "/" + parts[1] + "/" + parts[0];
-      if (!data || !data.success || !z || !info || info.gregorianDate !== expect) {
+      if (!data || !data.success || !z || !info || !info.gregorianDate) {
         refineFromHebcal(dateStr);
         return;
       }
-      if (z.alotHashachar) dayState.times.alot = z.alotHashachar;
-      if (z.sofZmanKriatShma) dayState.times.shma = z.sofZmanKriatShma;
-      if (z.chatzot) dayState.times.chatzot = z.chatzot;
-      if (z.shkiaNireit) dayState.times.sunset = z.shkiaNireit;
-      if (z.tzeitHaKochavim) dayState.times.tzeit = z.tzeitHaKochavim;
-      if (z.hadlakatNerot) dayState.candles = z.hadlakatNerot;
-      if (z.tzeitShabbat) dayState.havdalah = z.tzeitShabbat;
-      if (info.parsha) dayState.parasha = info.parsha;
+      // calibrate the offline model against the source's own date (works even when the file is a day or two old)
+      var gp = info.gregorianDate.split("/");
+      var zz = offlineZmanim(+gp[2], +gp[1], +gp[0]);
+      if (z.alotHashachar) CAL.alot = hmToMins(z.alotHashachar) - zz.alot;
+      if (z.sofZmanKriatShma) CAL.shma = hmToMins(z.sofZmanKriatShma) - zz.shma;
+      if (z.chatzot) CAL.chatzot = hmToMins(z.chatzot) - zz.chatzot;
+      if (z.shkiaNireit) CAL.sunset = hmToMins(z.shkiaNireit) - zz.sunset;
+      if (z.tzeitHaKochavim) CAL.tzeit = hmToMins(z.tzeitHaKochavim) - zz.tzeit;
+      if (z.hadlakatNerot) CAL.candles = hmToMins(z.hadlakatNerot) - zz.sunset;
+      if (z.tzeitShabbat) CAL.hav = hmToMins(z.tzeitShabbat) - zz.sunset;
+      var parts = dateStr.split("-");
+      var expect = parts[2] + "/" + parts[1] + "/" + parts[0];
+      computeDay(dateStr);
+      if (info.gregorianDate === expect) {
+        dayState.exact = true;
+        if (z.alotHashachar) dayState.times.alot = z.alotHashachar;
+        if (z.sofZmanKriatShma) dayState.times.shma = z.sofZmanKriatShma;
+        if (z.chatzot) dayState.times.chatzot = z.chatzot;
+        if (z.shkiaNireit) {
+          dayState.times.sunset = z.shkiaNireit;
+          dayState.sunsetMins = hmToMins(z.shkiaNireit);
+        }
+        if (z.tzeitHaKochavim) dayState.times.tzeit = z.tzeitHaKochavim;
+        // candle lighting / havdalah are for Friday / Saturday: exact only on those days
+        if (dayState.dow === 5 && z.hadlakatNerot) dayState.candles = z.hadlakatNerot;
+        if (dayState.dow === 6 && z.tzeitShabbat) dayState.havdalah = z.tzeitShabbat;
+        if (info.parsha) dayState.parasha = info.parsha;
+        // re-evaluate the Hebrew date rollover with the exact sunset
+        computeHebrewOnly(dateStr);
+      }
+      refineParashaFromHebcal();
       renderDynamic();
     }, function() {
       refineFromHebcal(dateStr);
     });
   }
-  function refineFromHebcal(dateStr) {
-    xhrJson("https://www.hebcal.com/zmanim?cfg=json&latitude=" + LAT + "&longitude=" + LNG + "&date=" + dateStr, function(data) {
-      var t = data && data.times || {};
-      if (t.alotHaShachar) dayState.times.alot = isoToManilaTime(t.alotHaShachar);
-      if (t.sofZmanShma) dayState.times.shma = isoToManilaTime(t.sofZmanShma);
-      if (t.chatzot) dayState.times.chatzot = isoToManilaTime(t.chatzot);
-      if (t.sunset) dayState.times.sunset = isoToManilaTime(t.sunset);
-      var tz = t.tzeit7083deg || t.tzeit85deg || t.tzeit42min;
-      if (tz) dayState.times.tzeit = isoToManilaTime(tz);
-      renderDynamic();
-    });
+  function computeHebrewOnly(dateStr) {
+    var parts = dateStr.split("-");
+    var mn = manilaNow();
+    var nowMins = mn.getHours() * 60 + mn.getMinutes();
+    var abs = g2abs(+parts[0], +parts[1], +parts[2]);
+    if (nowMins > dayState.sunsetMins) abs += 1;
+    var h = abs2hebrew(abs);
+    dayState.hebrew = hebrewDateStr(h);
+    dayState.special = specialDays(h, abs);
+    dayState.hyKey = HY_MONTH[h.hm] + "|" + h.hd;
+  }
+  function refineParashaFromHebcal() {
     xhrJson("https://www.hebcal.com/shabbat?cfg=json&latitude=" + LAT + "&longitude=" + LNG + "&M=on", function(data) {
       var items = data && data.items || [];
       for (var i = 0; i < items.length; i++) {
-        var it = items[i];
-        if (it.category === "candles") dayState.candles = isoToManilaTime(it.date);
-        else if (it.category === "parashat") dayState.parasha = it.hebrew || "";
-        else if (it.category === "havdalah") dayState.havdalah = isoToManilaTime(it.date);
+        if (items[i].category === "parashat" && items[i].hebrew) dayState.parasha = items[i].hebrew;
       }
       renderDynamic();
     });
+  }
+  function refineFromHebcal(dateStr) {
+    refineParashaFromHebcal();
   }
   var G_WEEKDAYS = ["\u05D9\u05D5\u05DD \u05E8\u05D0\u05E9\u05D5\u05DF", "\u05D9\u05D5\u05DD \u05E9\u05E0\u05D9", "\u05D9\u05D5\u05DD \u05E9\u05DC\u05D9\u05E9\u05D9", "\u05D9\u05D5\u05DD \u05E8\u05D1\u05D9\u05E2\u05D9", "\u05D9\u05D5\u05DD \u05D7\u05DE\u05D9\u05E9\u05D9", "\u05D9\u05D5\u05DD \u05E9\u05D9\u05E9\u05D9", "\u05E9\u05D1\u05EA"];
   function esc(s) {
@@ -1442,6 +1475,13 @@ body,.file-card{-webkit-font-smoothing:antialiased;text-rendering:geometricPreci
     if (ds !== dayState.dateStr) {
       computeDay(ds);
       refineFromZmanimIl(ds);
+    } else {
+      var mq = manilaNow();
+      var mk = mq.getHours() * 60 + mq.getMinutes();
+      if (mk !== dayState.lastMin) {
+        dayState.lastMin = mk;
+        computeHebrewOnly(ds);
+      }
     }
     renderDynamic();
   }

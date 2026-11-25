@@ -1,34 +1,24 @@
-name: Bake daily zmanim
-
+name: Refresh zmanim
 on:
   schedule:
-    # 00:05 Asia/Manila (UTC+8) every day
-    - cron: "5 16 * * *"
+    - cron: "15 16 * * *"
+    - cron: "45 20 * * *"
   workflow_dispatch:
-
 permissions:
   contents: write
-
 jobs:
-  bake:
+  refresh:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Fetch zmanim.org.il for Manila (Chabad / Admor HaZaken)
+      - name: Fetch zmanim.org.il (Manila)
         run: |
-          curl -fsSL --retry 4 --retry-delay 30 --retry-all-errors --max-time 180 \
-            "https://zmanei-halacha-backend.onrender.com/api/zmanim/asia/Filipinas%2C%20Manila" \
-            -o zmanim.new.json
-          python3 - <<'PY'
-          import json
-          d = json.load(open("zmanim.new.json"))
-          assert d.get("success") and d["data"]["zmanim"], "unexpected payload"
-          json.dump(d, open("zmanim.json", "w"), ensure_ascii=False, indent=2)
-          PY
+          curl -fsS --retry 5 --retry-delay 20 "https://zmanei-halacha-backend.onrender.com/api/zmanim/asia/Filipinas,%20Manila" -o new.json
+          python3 -c "import json;d=json.load(open('new.json'));assert d['success'] and d['data']['zmanim']['alotHashachar'] and d['dateInfo']['gregorianDate']"
+          mv new.json zmanim.json
       - name: Commit if changed
         run: |
-          git config user.name "zmanim-bake"
-          git config user.email "zmanim-bake@users.noreply.github.com"
+          git config user.name "zmanim-bot"
+          git config user.email "zmanim-bot@users.noreply.github.com"
           git add zmanim.json
-          git diff --cached --quiet && echo "no change" || git commit -m "chore: daily zmanim bake"
-          git push
+          git diff --cached --quiet || (git commit -m "Refresh zmanim.json from zmanim.org.il" && git push)
