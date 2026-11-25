@@ -553,6 +553,24 @@ body {
   font-size: 14px;
   color: #9aa4b8;
 }
+.zb-ded-contact {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 70px;
+  text-align: center;
+  font-family: "Frank Ruhl Libre", Georgia, serif;
+  font-size: 46px;
+  font-weight: 700;
+  color: #e6c26a;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  unicode-bidi: isolate;
+}
+.zb-ded-contact span {
+  direction: ltr;
+  unicode-bidi: isolate;
+  white-space: nowrap;
+}
 .zb-slide-yechi {
   background: #0a1222;
   background:
@@ -1318,6 +1336,7 @@ body,.file-card{-webkit-font-smoothing:antialiased;text-rendering:geometricPreci
       h += "</div>";
     }
     if (!DEDICATION_MINIMAL) h += '<div class="zb-dedication-footer" dir="rtl">\u05DC\u05D4\u05E7\u05D3\u05E9\u05D5\u05EA: <span dir="ltr">' + esc(DEDICATIONS_PHONE) + "</span></div>";
+    h += '<div class="zb-ded-contact" dir="rtl">\u05DC\u05D4\u05E7\u05D3\u05E9\u05EA \u05D9\u05D5\u05DD \u05DC\u05D6\u05DB\u05D5\u05EA \u05D9\u05E7\u05D9\u05E8\u05D9\u05DA \u05E0\u05D9\u05EA\u05DF \u05DC\u05E4\u05E0\u05D5\u05EA \u05DC<span dir="ltr">+63 917 825 1770</span></div>';
     h += "</section>";
     h += '<section class="zb-slide zb-slide-yechi"><div class="zb-yechi">\u05D9\u05D7\u05D9 \u05D0\u05D3\u05D5\u05E0\u05E0\u05D5 \u05DE\u05D5\u05E8\u05E0\u05D5 \u05D5\u05E8\u05D1\u05D9\u05E0\u05D5<br>\u05DE\u05DC\u05DA \u05D4\u05DE\u05E9\u05D9\u05D7 \u05DC\u05E2\u05D5\u05DC\u05DD \u05D5\u05E2\u05D3</div></section>';
     h += "</div>";
