@@ -170,6 +170,13 @@ body {
 .zb-slide-hero > * + * {
   margin-top: 0;
 }
+.zb-shul-img {
+  display: block;
+  width: 78vw;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
 .zb-shul {
   font-family:
     "Yiddishkeit AAA",
@@ -561,13 +568,14 @@ body {
     font-size: 160px;
   }
   .zb-shul-sub {
-    font-size: 46px;
+    font-size: 40px;
     margin-top: 22px;
+    white-space: nowrap;
   }
   .zb-dateframe {
-    font-size: 33px;
-    padding: 22px 60px;
-    margin-top: 50px;
+    font-size: 40px;
+    padding: 26px 72px;
+    margin-top: 86px;
   }
   .zb-hero-yechi {
     font-size: 30px;
@@ -1017,8 +1025,8 @@ body {
     h += '<div class="file-card" lang="he" dir="rtl">';
     h += '<div class="zb-deck" style="background-image: linear-gradient(rgba(9, 15, 30, 0.55), rgba(9, 15, 30, 0.78)), url(' + zmanim_bg_default + '); background-size: cover; background-position: center">';
     h += '<section class="zb-slide zb-slide-hero" style="background-image: linear-gradient(rgba(9, 15, 30, 0.62), rgba(9, 15, 30, 0.88)), url(' + zmanim_hero_default + ')">';
-    h += '<div class="zb-shul">\u05D1\u05D9\u05EA \u05D7\u05D1\u05F4\u05D3 \u05DE\u05E0\u05D9\u05DC\u05D4</div>';
-    h += '<div class="zb-shul-sub">\u05D1\u05D9\u05EA \u05D4\u05DB\u05E0\u05E1\u05EA \u05D5\u05D1\u05D9\u05EA \u05D4\u05DE\u05D3\u05E8\u05E9 \u05D4\u05DE\u05E8\u05DB\u05D6\u05D9</div>';
+    h += '<div class="zb-shul"><img class="zb-shul-img" src="shul-name.png" alt="\u05D1\u05D9\u05EA \u05D7\u05D1\u05F4\u05D3 \u05DE\u05E0\u05D9\u05DC\u05D4"></div>';
+    h += '<div class="zb-shul-sub">\u05D1\u05D9\u05EA \u05D4\u05DB\u05E0\u05E1\u05EA \u05D5\u05D1\u05D9\u05EA \u05D4\u05DE\u05D3\u05E8\u05E9 \u05D4\u05DE\u05E8\u05DB\u05D6\u05D9 \u05D5\u05D1\u05D9\u05EA \u05DE\u05E2\u05E9\u05D9\u05DD \u05D8\u05D5\u05D1\u05D9\u05DD</div>';
     h += '<div class="zb-dateframe" id="zb-dates"></div>';
     h += '<div class="zb-hero-yechi">\u05D9\u05D7\u05D9 \u05D0\u05D3\u05D5\u05E0\u05E0\u05D5 \u05DE\u05D5\u05E8\u05E0\u05D5 \u05D5\u05E8\u05D1\u05D9\u05E0\u05D5 \u05DE\u05DC\u05DA \u05D4\u05DE\u05E9\u05D9\u05D7 \u05DC\u05E2\u05D5\u05DC\u05DD \u05D5\u05E2\u05D3</div>';
     h += "</section>";
