@@ -98,14 +98,30 @@
   font-weight: 100 900;
   font-style: normal;
 }
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
 html,
 body,
 #root {
   margin: 0;
-  min-height: 100%;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
 }
 body {
   background: #0a1222;
+  overflow: hidden;
+}
+::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  display: none;
+}
+.zb-nocursor,
+.zb-nocursor * {
+  cursor: none !important;
 }
 .file-card {
   background: #0a1222;
@@ -121,7 +137,7 @@ body {
 .zb-deck {
   position: relative;
   overflow: hidden;
-  height: 620px;
+  height: 100vh;
 }
 .zb-slide {
   position: absolute;
@@ -374,7 +390,7 @@ body {
 }
 .zb-minyan {
   width: 100%;
-  max-width: 900px;
+  max-width: 700px;
   border: 1px solid rgba(230, 194, 106, 0.22);
   border-radius: 12px;
   overflow: hidden;
@@ -418,6 +434,7 @@ body {
   font-weight: 600;
   color: #ffffff;
   letter-spacing: 0.03em;
+  white-space: nowrap;
 }
 .zb-note {
   max-width: 900px;
@@ -430,6 +447,7 @@ body {
   max-width: 1000px;
   max-height: 100%;
   overflow-y: auto;
+  scrollbar-width: none;
   font-size: 17px;
   line-height: 1.9;
   color: #efe7d3;
@@ -539,9 +557,6 @@ body {
   background: #e6c26a;
 }
 @media (min-width: 768px) {
-  .zb-deck {
-    height: 780px;
-  }
   .zb-shul {
     font-size: 160px;
   }
@@ -581,7 +596,7 @@ body {
     font-size: 40px;
   }
   .zb-minyan-row {
-    width: 50%;
+    width: 100%;
   }
   .zb-minyan-row:nth-child(odd) {
     background: rgba(255, 255, 255, 0.03);
@@ -591,10 +606,10 @@ body {
     max-height: 560px;
   }
   .zb-minyan-label {
-    font-size: 18px;
+    font-size: 21px;
   }
   .zb-minyan-value {
-    font-size: 24px;
+    font-size: 26px;
   }
   .zb-note {
     font-size: 14px;
@@ -604,9 +619,6 @@ body {
   }
 }
 @media (min-width: 1200px) {
-  .zb-deck {
-    height: 880px;
-  }
   #zb-hy-title {
     font-size: 46px;
   }
@@ -1079,6 +1091,23 @@ body {
       refineFromHebcal(ds);
     }
     renderDynamic();
+  }
+  var zbCursorTimer = null;
+  function zbHideCursor() {
+    if (document.body.className.indexOf("zb-nocursor") === -1) {
+      document.body.className += " zb-nocursor";
+    }
+  }
+  function zbShowCursor() {
+    document.body.className = document.body.className.replace(/\s*zb-nocursor/g, "");
+    if (zbCursorTimer) {
+      clearTimeout(zbCursorTimer);
+    }
+    zbCursorTimer = setTimeout(zbHideCursor, 3e3);
+  }
+  if (document.addEventListener) {
+    document.addEventListener("mousemove", zbShowCursor);
+    zbShowCursor();
   }
   buildDom();
   computeDay(dateStrOf(manilaNow()));
