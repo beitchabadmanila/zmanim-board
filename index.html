@@ -779,11 +779,13 @@ body,.file-card{-webkit-font-smoothing:antialiased;text-rendering:geometricPreci
   var MINYANIM_SHABBAT = [
     ["\u05DE\u05E0\u05D7\u05D4 \u05E2\u05E8\u05D1 \u05E9\u05D1\u05EA", "18:00"],
     ["\u05E7\u05D1\u05DC\u05EA \u05E9\u05D1\u05EA", "18:30"],
-    ["\u05E9\u05D7\u05E8\u05D9\u05EA \u05E9\u05D1\u05EA", "10:00"],
+    ["\u05E9\u05D7\u05E8\u05D9\u05EA \u05E9\u05D1\u05EA", "10:00", "zb-shach-sat"],
     ["\u05DE\u05E0\u05D7\u05D4 \u05E9\u05D1\u05EA", "18:00"],
     ["\u05E2\u05E8\u05D1\u05D9\u05EA \u05DE\u05D5\u05E6\u05D0\u05D9 \u05E9\u05D1\u05EA", "19:30"]
   ];
-  var MINYAN_NOTE = "\u05D1\u05E9\u05D1\u05EA \u05DE\u05D1\u05E8\u05DB\u05D9\u05DD \u05E9\u05D7\u05E8\u05D9\u05EA \u05D1\u05BE10:30. \u05D6\u05DE\u05E0\u05D9 \u05E9\u05D1\u05EA \u05DC\u05E4\u05D9 \u05D0\u05EA\u05E8 \u05D7\u05D1\u05F4\u05D3 \u05DE\u05E0\u05D9\u05DC\u05D4 (chabad.ph); \u05DE\u05E0\u05D7\u05D4 \u05D5\u05E2\u05E8\u05D1\u05D9\u05EA \u05DE\u05E9\u05EA\u05E0\u05D9\u05DD \u05DC\u05E4\u05E2\u05DE\u05D9\u05DD \u2014 \u05DC\u05D5\u05D5\u05D3\u05D0 \u05DE\u05D5\u05DC \u05D1\u05D9\u05EA \u05D4\u05DB\u05E0\u05E1\u05EA.";
+  var MINYAN_NOTE_BASE = "\u05D6\u05DE\u05E0\u05D9 \u05E9\u05D1\u05EA \u05DC\u05E4\u05D9 \u05D0\u05EA\u05E8 \u05D7\u05D1\u05F4\u05D3 \u05DE\u05E0\u05D9\u05DC\u05D4 (chabad.ph); \u05DE\u05E0\u05D7\u05D4 \u05D5\u05E2\u05E8\u05D1\u05D9\u05EA \u05DE\u05E9\u05EA\u05E0\u05D9\u05DD \u05DC\u05E4\u05E2\u05DE\u05D9\u05DD \u2014 \u05DC\u05D5\u05D5\u05D3\u05D0 \u05DE\u05D5\u05DC \u05D1\u05D9\u05EA \u05D4\u05DB\u05E0\u05E1\u05EA.";
+  var MINYAN_NOTE_MEV = "\u05D4\u05E9\u05D1\u05EA \u05E9\u05D1\u05EA \u05DE\u05D1\u05E8\u05DB\u05D9\u05DD: \u05E9\u05D7\u05E8\u05D9\u05EA \u05D1\u05BE10:30. ";
+  var MINYAN_NOTE = MINYAN_NOTE_BASE;
   var SLIDE_SECONDS = 8;
   function p2(n) {
     return (n < 10 ? "0" : "") + n;
@@ -1112,8 +1114,19 @@ body,.file-card{-webkit-font-smoothing:antialiased;text-rendering:geometricPreci
     parasha: "",
     special: [],
     candles: "",
+    mevarchim: false,
     havdalah: ""
   };
+  // Shabbat Mevarchim: the last Shabbat before Rosh Chodesh (not before Tishrei, not Shabbat Rosh Chodesh itself)
+  function isMevarchim(satAbs) {
+    var hs = abs2hebrew(satAbs);
+    if (hs.hd === 30 || hs.hd === 1) return false;
+    for (var k = 1; k <= 7; k++) {
+      var hk = abs2hebrew(satAbs + k);
+      if (hk.hd === 30 || hk.hd === 1) return hk.hm !== 7;
+    }
+    return false;
+  }
   function computeDay(dateStr) {
     var parts = dateStr.split("-");
     var y = +parts[0], m = +parts[1], d = +parts[2];
@@ -1144,6 +1157,7 @@ body,.file-card{-webkit-font-smoothing:antialiased;text-rendering:geometricPreci
     var s = abs2greg(satAbs);
     var friSet = sunMinutes(f[0], f[1], f[2], 90.833, false) || 1044;
     var satTzeit = sunMinutes(s[0], s[1], s[2], 90 + 8.5, false) || friSet + 1462 - 1440;
+    dayState.mevarchim = isMevarchim(satAbs);
     dayState.candles = minsToTime(friSet - 18);
     dayState.havdalah = minsToTime(satTzeit);
   }
@@ -1242,7 +1256,7 @@ body,.file-card{-webkit-font-smoothing:antialiased;text-rendering:geometricPreci
   function minyanRows(rows) {
     var h = "";
     for (var i = 0; i < rows.length; i++) {
-      h += '<div class="zb-minyan-row"><span class="zb-minyan-label">' + esc(rows[i][0]) + '</span><span class="zb-minyan-value" dir="ltr">' + esc(rows[i][1]) + "</span></div>";
+      h += '<div class="zb-minyan-row"><span class="zb-minyan-label">' + esc(rows[i][0]) + '</span><span class="zb-minyan-value" dir="ltr"' + (rows[i][2] ? ' id="' + rows[i][2] + '"' : "") + '>' + esc(rows[i][1]) + "</span></div>";
     }
     return h;
   }
@@ -1265,7 +1279,7 @@ body,.file-card{-webkit-font-smoothing:antialiased;text-rendering:geometricPreci
     h += '</div><div class="zb-note">\u05D4\u05D6\u05DE\u05E0\u05D9\u05DD \u05DC\u05E4\u05D9 zmanim.org.il \u2014 \u05E9\u05D9\u05D8\u05EA \u05D0\u05D3\u05DE\u05D5\u05F4\u05E8 \u05D4\u05D6\u05E7\u05DF, \u05DE\u05E0\u05D9\u05DC\u05D4</div></section>';
     h += '<section class="zb-slide zb-slide-minyan"><div class="zb-slide-title">\u05D6\u05DE\u05E0\u05D9 \u05D4\u05EA\u05E4\u05D9\u05DC\u05D5\u05EA</div>';
     h += '<div class="zb-mwrap"><div class="zb-mpanel"><div class="zb-mhead">\u05D9\u05DE\u05D9 \u05D7\u05D5\u05DC</div>' + minyanRows(MINYANIM) + '</div><div class="zb-mpanel"><div class="zb-mhead">\u05E9\u05D1\u05EA</div>' + minyanRows(MINYANIM_SHABBAT) + "</div></div>";
-    h += '<div class="zb-note">' + esc(MINYAN_NOTE) + "</div></section>";
+    h += '<div class="zb-note" id="zb-minyan-note">' + esc(MINYAN_NOTE) + "</div></section>";
     h += '<section class="zb-slide zb-slide-shabbat">';
     h += '<div class="zb-shabbat-title" id="zb-shabbat-title">\u05E9\u05D1\u05EA</div>';
     h += '<div class="zb-shabbat-items">';
@@ -1358,6 +1372,8 @@ body,.file-card{-webkit-font-smoothing:antialiased;text-rendering:geometricPreci
     for (var i = 0; i < ZMANIM.length; i++) {
       setText("zb-z-" + ZMANIM[i].key, dayState.times[ZMANIM[i].key] || "\u2014");
     }
+    setText("zb-shach-sat", dayState.mevarchim ? "10:30" : "10:00");
+    setText("zb-minyan-note", esc((dayState.mevarchim ? MINYAN_NOTE_MEV : "") + MINYAN_NOTE_BASE));
     setText("zb-shabbat-title", esc(dayState.parasha || "\u05E9\u05D1\u05EA"));
     setText("zb-candles", dayState.candles || "\u2014");
     setText("zb-havdalah", dayState.havdalah || "\u2014");
