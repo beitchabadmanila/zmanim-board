@@ -1242,7 +1242,8 @@ body,.file-card{-webkit-font-smoothing:antialiased;text-rendering:geometricPreci
     h += "</div></section>";
     h += '<section class="zb-slide"><div class="zb-slide-title" id="zb-hy-title">\u05D4\u05D9\u05D5\u05DD \u05D9\u05D5\u05DD</div>';
     h += '<div class="zb-hayomyom" id="zb-hy-body">\u2014</div></section>';
-    h += '<section class="zb-slide"><div class="zb-slide-title">\u05D4\u05E7\u05D3\u05E9\u05D5\u05EA \u05DC\u05E2\u05D9\u05DC\u05D5\u05D9 \u05E0\u05E9\u05DE\u05D4</div>';
+    var DEDICATION_MINIMAL = true; // true: show only the Rebbe line (no title, no phone). Set false to restore.
+    h += '<section class="zb-slide">' + (DEDICATION_MINIMAL ? "" : '<div class="zb-slide-title">\u05D4\u05E7\u05D3\u05E9\u05D5\u05EA \u05DC\u05E2\u05D9\u05DC\u05D5\u05D9 \u05E0\u05E9\u05DE\u05D4</div>');
     if (DEDICATIONS.length === 0) {
       h += '<div class="zb-dedication-empty">\u05D4\u05D4\u05E7\u05D3\u05E9\u05D5\u05EA \u05D9\u05D5\u05E4\u05D9\u05E2\u05D5 \u05DB\u05D0\u05DF \u05D1\u05E7\u05E8\u05D5\u05D1</div>';
     } else {
@@ -1254,7 +1255,8 @@ body,.file-card{-webkit-font-smoothing:antialiased;text-rendering:geometricPreci
       }
       h += "</div>";
     }
-    h += '<div class="zb-dedication-footer" dir="rtl">\u05DC\u05D4\u05E7\u05D3\u05E9\u05D5\u05EA: <span dir="ltr">' + esc(DEDICATIONS_PHONE) + "</span></div></section>";
+    if (!DEDICATION_MINIMAL) h += '<div class="zb-dedication-footer" dir="rtl">\u05DC\u05D4\u05E7\u05D3\u05E9\u05D5\u05EA: <span dir="ltr">' + esc(DEDICATIONS_PHONE) + "</span></div>";
+    h += "</section>";
     h += '<section class="zb-slide zb-slide-yechi"><div class="zb-yechi">\u05D9\u05D7\u05D9 \u05D0\u05D3\u05D5\u05E0\u05E0\u05D5 \u05DE\u05D5\u05E8\u05E0\u05D5 \u05D5\u05E8\u05D1\u05D9\u05E0\u05D5<br>\u05DE\u05DC\u05DA \u05D4\u05DE\u05E9\u05D9\u05D7 \u05DC\u05E2\u05D5\u05DC\u05DD \u05D5\u05E2\u05D3</div></section>';
     h += "</div>";
     h += '<div class="zb-dots" dir="ltr">';
