@@ -133,11 +133,21 @@ body {
   color: #efe7d3;
   max-width: none;
   padding: 0;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1920px;
+  height: 1080px;
+  margin: -540px 0 0 -960px;
+  -webkit-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+  overflow: hidden;
 }
 .zb-deck {
   position: relative;
   overflow: hidden;
-  height: 100vh;
+  width: 1920px;
+  height: 1080px;
 }
 .zb-slide {
   position: absolute;
@@ -172,7 +182,7 @@ body {
 }
 .zb-shul-img {
   display: block;
-  width: 78vw;
+  width: 1498px;
   max-width: 100%;
   height: auto;
   margin: 0 auto;
@@ -200,6 +210,38 @@ body {
   color: #c9b98a;
   letter-spacing: 0.08em;
 }
+.zb-slide-hero > .zb-special {
+  margin-top: 26px;
+  max-width: 1805px;
+  text-align: center;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+.zb-special-text {
+  font-family:
+    "Frank Ruhl Libre",
+    Georgia,
+    serif;
+  font-weight: 700;
+  font-size: 22px;
+  color: #f4dc9a;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.85), 0 0 18px rgba(230, 194, 106, 0.35);
+  margin: 0 14px;
+}
+.zb-orn {
+  width: 70px;
+  height: 14px;
+  -webkit-flex: none;
+  flex: none;
+}
+.zb-orn-r {
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
 .zb-clock {
   margin-top: 22px;
   font-family:
@@ -207,7 +249,7 @@ body {
     Georgia,
     serif;
   font-size: 60px;
-  font-size: clamp(52px, 12vw, 150px);
+  font-size: 150px;
   font-weight: 600;
   letter-spacing: 0.02em;
   line-height: 1;
@@ -297,7 +339,7 @@ body {
 }
 .zb-clock-small {
   font-size: 48px;
-  font-size: clamp(40px, 6vw, 96px);
+  font-size: 96px;
   margin-bottom: 26px;
 }
 .zb-slide-title {
@@ -494,7 +536,7 @@ body {
     serif;
   font-family: "Frank Ruhl Libre", var(--file-font-display, Georgia, serif);
   font-size: 44px;
-  font-size: clamp(36px, 6vw, 88px);
+  font-size: 88px;
   font-weight: 700;
   color: #f4e9cd;
   line-height: 1.25;
@@ -502,7 +544,7 @@ body {
 .zb-dedication-line {
   margin-top: 12px;
   font-size: 20px;
-  font-size: clamp(18px, 2.2vw, 30px);
+  font-size: 30px;
   color: #c9b98a;
 }
 .zb-dedication-footer {
@@ -536,7 +578,7 @@ body {
     serif;
   font-family: "Frank Ruhl Libre", var(--file-font-display, Georgia, serif);
   font-size: 40px;
-  font-size: clamp(30px, 5.5vw, 72px);
+  font-size: 72px;
   font-weight: 700;
   line-height: 1.35;
   text-align: center;
@@ -563,7 +605,7 @@ body {
 .zb-dot.is-active {
   background: #e6c26a;
 }
-@media (min-width: 768px) {
+@media all {
   .zb-shul {
     font-size: 160px;
   }
@@ -575,6 +617,19 @@ body {
     color: #e6c26a;
     letter-spacing: 0;
     text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8);
+  }
+  .zb-slide-hero > .zb-special {
+    margin-top: 68px;
+  }
+  .zb-special-text {
+    font-size: 54px;
+    margin: 0 64px;
+    max-width: 1190px;
+    line-height: 1.15;
+  }
+  .zb-orn {
+    width: 240px;
+    height: 42px;
   }
   .zb-dateframe {
     font-size: 40px;
@@ -630,7 +685,7 @@ body {
     width: 100%;
   }
 }
-@media (min-width: 1200px) {
+@media all {
   #zb-hy-title {
     font-size: 46px;
   }
@@ -832,12 +887,132 @@ body {
     }
     s += H_TENS[Math.floor(n / 10)] + H_ONES[n % 10];
     if (s.length > 1) s = s.slice(0, s.length - 1) + "\u05F4" + s.slice(s.length - 1);
+    else s += "\u05F3";
     return s;
   }
   function hebrewDateStr(h) {
     var mname = H_MONTH_NAME[h.hm];
     if (h.hm === 12 && !isLeapH(h.hy)) mname = "\u05D0\u05D3\u05E8";
     return gematria(h.hd) + " \u05D1" + mname + " " + gematria(h.hy % 1e3);
+  }
+  // ---- special days (Diaspora rules), computed offline from the Hebrew date ----
+  var SP_MONTH = {
+    1: "\u05E0\u05D9\u05E1\u05DF", 2: "\u05D0\u05D9\u05D9\u05E8", 3: "\u05E1\u05D9\u05D5\u05D5\u05DF",
+    4: "\u05EA\u05DE\u05D5\u05D6", 5: "\u05D0\u05D1", 6: "\u05D0\u05DC\u05D5\u05DC",
+    7: "\u05EA\u05E9\u05E8\u05D9", 8: "\u05D7\u05E9\u05D5\u05D5\u05DF", 9: "\u05DB\u05E1\u05DC\u05D5",
+    10: "\u05D8\u05D1\u05EA", 11: "\u05E9\u05D1\u05D8", 12: "\u05D0\u05D3\u05E8", 13: "\u05D0\u05D3\u05E8 \u05D1\u05F3"
+  };
+  var SP_CAND = ["", "\u05D0\u05F3", "\u05D1\u05F3", "\u05D2\u05F3", "\u05D3\u05F3", "\u05D4\u05F3", "\u05D5\u05F3", "\u05D6\u05F3", "\u05D7\u05F3"];
+  // Chabad days: [month, day, text]. Edit this list to add or remove days.
+  var CHABAD_ENABLED = false; // set true after the list is approved
+  var CHABAD_DAYS = [
+    [8, 20, "\u05D9\u05D5\u05DD \u05D4\u05D5\u05DC\u05D3\u05EA \u05D4\u05E8\u05D1\u05D9 \u05D4\u05E8\u05E9\u05D1\u05F4\u05D1"],
+    [9, 9, "\u05D9\u05D5\u05DD \u05D4\u05D5\u05DC\u05D3\u05EA \u05D5\u05D9\u05D5\u05DD \u05D4\u05E1\u05EA\u05DC\u05E7\u05D5\u05EA \u05D0\u05D3\u05DE\u05D5\u05F4\u05E8 \u05D4\u05D0\u05DE\u05E6\u05E2\u05D9"],
+    [9, 10, "\u05D9\u05D5\u05DD \u05D4\u05D2\u05D0\u05D5\u05DC\u05D4 \u05E9\u05DC \u05D0\u05D3\u05DE\u05D5\u05F4\u05E8 \u05D4\u05D0\u05DE\u05E6\u05E2\u05D9"],
+    [9, 19, "\u05E8\u05D0\u05E9 \u05D4\u05E9\u05E0\u05D4 \u05DC\u05D7\u05E1\u05D9\u05D3\u05D5\u05EA"],
+    [9, 20, "\u05D9\u05D5\u05DD \u05D4\u05D2\u05D0\u05D5\u05DC\u05D4 \u05E9\u05DC \u05D0\u05D3\u05DE\u05D5\u05F4\u05E8 \u05D4\u05D6\u05E7\u05DF"],
+    [10, 5, "\u05D9\u05D5\u05DD \u05D4\u05E1\u05E4\u05E8\u05D9\u05DD"],
+    [11, 10, "\u05D9\u05D5\u05DD \u05D4\u05E1\u05EA\u05DC\u05E7\u05D5\u05EA \u05D4\u05E8\u05D1\u05D9 \u05D4\u05E8\u05D9\u05D9\u05F4\u05E6 \u05D5\u05D4\u05EA\u05D7\u05DC\u05EA \u05E0\u05E9\u05D9\u05D0\u05D5\u05EA \u05D4\u05E8\u05D1\u05D9"],
+    [11, 22, "\u05D9\u05D5\u05DD \u05D4\u05E1\u05EA\u05DC\u05E7\u05D5\u05EA \u05D4\u05E8\u05D1\u05E0\u05D9\u05EA \u05D7\u05D9\u05D4 \u05DE\u05D5\u05E9\u05E7\u05D0"],
+    [1, 11, "\u05D9\u05D5\u05DD \u05D4\u05D5\u05DC\u05D3\u05EA \u05D4\u05E8\u05D1\u05D9"],
+    [2, 2, "\u05D9\u05D5\u05DD \u05D4\u05D5\u05DC\u05D3\u05EA \u05D4\u05E8\u05D1\u05D9 \u05D4\u05DE\u05D4\u05E8\u05F4\u05E9"],
+    [4, 3, "\u05D9\u05D5\u05DD \u05D4\u05E1\u05EA\u05DC\u05E7\u05D5\u05EA \u05D4\u05E8\u05D1\u05D9"],
+    [4, 12, "\u05D9\u05D5\u05DD \u05D4\u05D2\u05D0\u05D5\u05DC\u05D4 \u05E9\u05DC \u05D4\u05E8\u05D1\u05D9 \u05D4\u05E8\u05D9\u05D9\u05F4\u05E6"],
+    [4, 13, "\u05D9\u05D5\u05DD \u05D4\u05D2\u05D0\u05D5\u05DC\u05D4 \u05E9\u05DC \u05D4\u05E8\u05D1\u05D9 \u05D4\u05E8\u05D9\u05D9\u05F4\u05E6"],
+    [6, 18, "\u05D9\u05D5\u05DD \u05D4\u05D5\u05DC\u05D3\u05EA \u05D4\u05D1\u05E2\u05E9\u05F4\u05D8 \u05D5\u05D0\u05D3\u05DE\u05D5\u05F4\u05E8 \u05D4\u05D6\u05E7\u05DF"]
+  ];
+  // returns array of strings for the Hebrew day h ({hy,hm,hd}) with abs day number
+  function specialDays(h, abs) {
+    var out = [];
+    var hm = h.hm, hd = h.hd, y = h.hy;
+    var dow = ((abs % 7) + 7) % 7; // 0 = Sunday (Rata Die)
+    var leap = isLeapH(y);
+    var adarLast = leap ? 13 : 12;
+    var T = function (s) { out.push(s); };
+    // Rosh Chodesh
+    if (hd === 30) {
+      var nm = hm === 12 && !leap ? 1 : (hm === 13 ? 1 : hm + 1);
+      if (hm === 6) nm = 7; // Elul 30 is Rosh Hashana eve? (Elul has 29), kept for safety
+      if (hm !== 6) T("\u05E8\u05D0\u05E9 \u05D7\u05D5\u05D3\u05E9 " + (nm === 12 && !leap ? SP_MONTH[12] : (nm === 12 ? "\u05D0\u05D3\u05E8 \u05D0\u05F3" : SP_MONTH[nm])));
+    } else if (hd === 1 && hm !== 7) {
+      T("\u05E8\u05D0\u05E9 \u05D7\u05D5\u05D3\u05E9 " + (hm === 12 && leap ? "\u05D0\u05D3\u05E8 \u05D0\u05F3" : SP_MONTH[hm]));
+    }
+    switch (hm) {
+      case 7:
+        if (hd === 1 || hd === 2) T("\u05E8\u05D0\u05E9 \u05D4\u05E9\u05E0\u05D4");
+        if (hd === 3 && dow !== 6) T("\u05E6\u05D5\u05DD \u05D2\u05D3\u05DC\u05D9\u05D4");
+        if (hd === 4 && dow === 0) T("\u05E6\u05D5\u05DD \u05D2\u05D3\u05DC\u05D9\u05D4");
+        if (hd === 9) T("\u05E2\u05E8\u05D1 \u05D9\u05D5\u05DD \u05DB\u05D9\u05E4\u05D5\u05E8");
+        if (hd === 10) T("\u05D9\u05D5\u05DD \u05DB\u05D9\u05E4\u05D5\u05E8");
+        if (hd === 14) T("\u05E2\u05E8\u05D1 \u05E1\u05D5\u05DB\u05D5\u05EA");
+        if (hd === 15) T("\u05E1\u05D5\u05DB\u05D5\u05EA \u2022 \u05D9\u05D5\u05DD \u05E8\u05D0\u05E9\u05D5\u05DF");
+        if (hd === 16) T("\u05E1\u05D5\u05DB\u05D5\u05EA \u2022 \u05D9\u05D5\u05DD \u05E9\u05E0\u05D9");
+        if (hd >= 17 && hd <= 20) T("\u05D7\u05D5\u05DC \u05D4\u05DE\u05D5\u05E2\u05D3 \u05E1\u05D5\u05DB\u05D5\u05EA");
+        if (hd === 21) T("\u05D4\u05D5\u05E9\u05E2\u05E0\u05D0 \u05E8\u05D1\u05D4");
+        if (hd === 22) T("\u05E9\u05DE\u05D9\u05E0\u05D9 \u05E2\u05E6\u05E8\u05EA");
+        if (hd === 23) T("\u05E9\u05DE\u05D7\u05EA \u05EA\u05D5\u05E8\u05D4");
+        break;
+      case 9:
+        if (hd >= 25) T("\u05D7\u05E0\u05D5\u05DB\u05D4 \u2022 \u05D9\u05D5\u05DD " + SP_CAND[hd - 24]);
+        break;
+      case 10:
+        var a25 = h2abs(y, 9, 25);
+        var n = abs - a25 + 1;
+        if (n >= 1 && n <= 8) T("\u05D7\u05E0\u05D5\u05DB\u05D4 \u2022 " + (n === 8 ? "\u05D6\u05D0\u05EA \u05D7\u05E0\u05D5\u05DB\u05D4" : "\u05D9\u05D5\u05DD " + SP_CAND[n]));
+        if (hd === 10) T("\u05E6\u05D5\u05DD \u05E2\u05E9\u05E8\u05D4 \u05D1\u05D8\u05D1\u05EA");
+        break;
+      case 11:
+        if (hd === 15) T("\u05D8\u05F4\u05D5 \u05D1\u05E9\u05D1\u05D8");
+        break;
+      case 12:
+      case 13:
+        if (hm === adarLast) {
+          if (hd === 13 && dow !== 6) T("\u05EA\u05E2\u05E0\u05D9\u05EA \u05D0\u05E1\u05EA\u05E8");
+          if (hd === 13 && dow === 6) T("\u05E2\u05E8\u05D1 \u05E4\u05D5\u05E8\u05D9\u05DD");
+          if (hd === 11 && dow === 4) T("\u05EA\u05E2\u05E0\u05D9\u05EA \u05D0\u05E1\u05EA\u05E8");
+          if (hd === 14) T("\u05E4\u05D5\u05E8\u05D9\u05DD");
+          if (hd === 15) T("\u05E9\u05D5\u05E9\u05DF \u05E4\u05D5\u05E8\u05D9\u05DD");
+        } else if (hm === 12 && leap) {
+          if (hd === 14) T("\u05E4\u05D5\u05E8\u05D9\u05DD \u05E7\u05D8\u05DF");
+          if (hd === 15) T("\u05E9\u05D5\u05E9\u05DF \u05E4\u05D5\u05E8\u05D9\u05DD \u05E7\u05D8\u05DF");
+        }
+        break;
+      case 1:
+        if (hd === 14) T("\u05E2\u05E8\u05D1 \u05E4\u05E1\u05D7");
+        if (hd === 15) T("\u05E4\u05E1\u05D7 \u2022 \u05D9\u05D5\u05DD \u05E8\u05D0\u05E9\u05D5\u05DF");
+        if (hd === 16) T("\u05E4\u05E1\u05D7 \u2022 \u05D9\u05D5\u05DD \u05E9\u05E0\u05D9");
+        if (hd >= 17 && hd <= 20) T("\u05D7\u05D5\u05DC \u05D4\u05DE\u05D5\u05E2\u05D3 \u05E4\u05E1\u05D7");
+        if (hd === 21) T("\u05E9\u05D1\u05D9\u05E2\u05D9 \u05E9\u05DC \u05E4\u05E1\u05D7");
+        if (hd === 22) T("\u05D0\u05D7\u05E8\u05D5\u05DF \u05E9\u05DC \u05E4\u05E1\u05D7");
+        break;
+      case 2:
+        if (hd === 18) T("\u05DC\u05F4\u05D2 \u05D1\u05E2\u05D5\u05DE\u05E8");
+        break;
+      case 3:
+        if (hd === 5) T("\u05E2\u05E8\u05D1 \u05E9\u05D1\u05D5\u05E2\u05D5\u05EA");
+        if (hd === 6) T("\u05E9\u05D1\u05D5\u05E2\u05D5\u05EA \u2022 \u05D9\u05D5\u05DD \u05E8\u05D0\u05E9\u05D5\u05DF");
+        if (hd === 7) T("\u05E9\u05D1\u05D5\u05E2\u05D5\u05EA \u2022 \u05D9\u05D5\u05DD \u05E9\u05E0\u05D9");
+        break;
+      case 4:
+        if (hd === 17 && dow !== 6) T("\u05E6\u05D5\u05DD \u05D9\u05F4\u05D6 \u05D1\u05EA\u05DE\u05D5\u05D6");
+        if (hd === 18 && dow === 0) T("\u05E6\u05D5\u05DD \u05D9\u05F4\u05D6 \u05D1\u05EA\u05DE\u05D5\u05D6");
+        break;
+      case 5:
+        if (hd === 9 && dow !== 6) T("\u05EA\u05E9\u05E2\u05D4 \u05D1\u05D0\u05D1");
+        if (hd === 10 && dow === 0) T("\u05EA\u05E9\u05E2\u05D4 \u05D1\u05D0\u05D1");
+        if (hd === 15) T("\u05D8\u05F4\u05D5 \u05D1\u05D0\u05D1");
+        break;
+      case 6:
+        if (hd === 29) T("\u05E2\u05E8\u05D1 \u05E8\u05D0\u05E9 \u05D4\u05E9\u05E0\u05D4");
+        break;
+    }
+    for (var i = 0; CHABAD_ENABLED && i < CHABAD_DAYS.length; i++) {
+      var c = CHABAD_DAYS[i];
+      if (c.length === 3 && c[0] === hm && c[1] === hd) {
+        T(c[2]);
+      }
+    }
+    return out;
   }
   var D2R = Math.PI / 180;
   var R2D = 180 / Math.PI;
@@ -890,6 +1065,7 @@ body {
     hebrew: "",
     hyKey: "",
     parasha: "",
+    special: [],
     candles: "",
     havdalah: ""
   };
@@ -912,6 +1088,7 @@ body {
     if (nowMins > zm.sunset) abs += 1;
     var h = abs2hebrew(abs);
     dayState.hebrew = hebrewDateStr(h);
+    dayState.special = specialDays(h, abs);
     dayState.hyKey = HY_MONTH[h.hm] + "|" + h.hd;
     var dow = mn.getDay();
     var toFri = (5 - dow + 7) % 7;
@@ -1032,6 +1209,7 @@ body {
     h += '<div class="zb-shul"><img class="zb-shul-img" src="shul-name.png" alt="\u05D1\u05D9\u05EA \u05D7\u05D1\u05F4\u05D3 \u05DE\u05E0\u05D9\u05DC\u05D4"></div>';
     h += '<div class="zb-shul-sub">\u05D1\u05D9\u05EA \u05D4\u05DB\u05E0\u05E1\u05EA \u05D5\u05D1\u05D9\u05EA \u05D4\u05DE\u05D3\u05E8\u05E9 \u05D4\u05DE\u05E8\u05DB\u05D6\u05D9 \u05D5\u05D1\u05D9\u05EA \u05DE\u05E2\u05E9\u05D9\u05DD \u05D8\u05D5\u05D1\u05D9\u05DD</div>';
     h += '<div class="zb-dateframe" id="zb-dates"></div>';
+    h += '<div class="zb-special" id="zb-special-wrap" style="display:none"><svg class="zb-orn" viewBox="0 0 160 28" width="160" height="28" aria-hidden="true"><defs><linearGradient id="zbg" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="112" y2="0"><stop offset="0" stop-color="#e6c26a" stop-opacity="0.15"/><stop offset="1" stop-color="#e6c26a"/></linearGradient></defs><path d="M0 14 H112" stroke="url(#zbg)" stroke-width="2.5" fill="none"/><path d="M112 14 C120 4 132 4 138 14 C132 24 120 24 112 14 Z" fill="#e6c26a"/><path d="M144 14 L152 8 L160 14 L152 20 Z" fill="#e6c26a"/></svg><span class="zb-special-text" id="zb-special"></span><svg class="zb-orn zb-orn-r" viewBox="0 0 160 28" width="160" height="28" aria-hidden="true"><defs><linearGradient id="zbg" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="112" y2="0"><stop offset="0" stop-color="#e6c26a" stop-opacity="0.15"/><stop offset="1" stop-color="#e6c26a"/></linearGradient></defs><path d="M0 14 H112" stroke="url(#zbg)" stroke-width="2.5" fill="none"/><path d="M112 14 C120 4 132 4 138 14 C132 24 120 24 112 14 Z" fill="#e6c26a"/><path d="M144 14 L152 8 L160 14 L152 20 Z" fill="#e6c26a"/></svg></div>';
     h += '<div class="zb-hero-yechi">\u05D9\u05D7\u05D9 \u05D0\u05D3\u05D5\u05E0\u05E0\u05D5 \u05DE\u05D5\u05E8\u05E0\u05D5 \u05D5\u05E8\u05D1\u05D9\u05E0\u05D5 \u05DE\u05DC\u05DA \u05D4\u05DE\u05E9\u05D9\u05D7 \u05DC\u05E2\u05D5\u05DC\u05DD \u05D5\u05E2\u05D3</div>';
     h += "</section>";
     h += '<section class="zb-slide"><div class="zb-slide-title">\u05D6\u05DE\u05E0\u05D9 \u05D4\u05D9\u05D5\u05DD</div>';
@@ -1119,6 +1297,12 @@ body {
     setText("zb-clock", clockHtml(mn));
     var dates = G_WEEKDAYS[mn.getDay()] + (dayState.hebrew ? " \u2022 " + dayState.hebrew : "") + (dayState.parasha ? " \u2022 " + dayState.parasha : "");
     setText("zb-dates", esc(dates));
+    var spEl = document.getElementById("zb-special-wrap");
+    if (spEl) {
+      var spTxt = dayState.special.join(" \u2022 ");
+      spEl.style.display = spTxt ? "" : "none";
+      setText("zb-special", esc(spTxt));
+    }
     for (var i = 0; i < ZMANIM.length; i++) {
       setText("zb-z-" + ZMANIM[i].key, dayState.times[ZMANIM[i].key] || "\u2014");
     }
@@ -1155,7 +1339,19 @@ body {
     document.addEventListener("mousemove", zbShowCursor);
     zbShowCursor();
   }
+  function fitStage() {
+    var el = document.querySelector(".file-card");
+    if (!el) return;
+    var w = window.innerWidth || document.documentElement.clientWidth;
+    var h = window.innerHeight || document.documentElement.clientHeight;
+    var k = Math.min(w / 1920, h / 1080);
+    var t = "scale(" + k + ")";
+    el.style.webkitTransform = t;
+    el.style.transform = t;
+  }
+  if (window.addEventListener) window.addEventListener("resize", fitStage);
   buildDom();
+  fitStage();
   computeDay(dateStrOf(manilaNow()));
   renderDynamic();
   showSlide(0);
