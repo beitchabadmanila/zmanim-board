@@ -1286,11 +1286,14 @@ body,.file-card{-webkit-font-smoothing:antialiased;text-rendering:geometricPreci
       dotEls[b].className = dotEls[b].className.replace(/ ?is-active/g, "") + (b === i ? " is-active" : "");
     }
   }
+  var FIRST_SLIDE_SECONDS = 10.5;
   function restartRotation() {
-    if (rotTimer) clearInterval(rotTimer);
-    rotTimer = setInterval(function() {
+    if (rotTimer) clearTimeout(rotTimer);
+    var wait = (currentSlide === 0 ? FIRST_SLIDE_SECONDS : SLIDE_SECONDS) * 1e3;
+    rotTimer = setTimeout(function() {
       showSlide((currentSlide + 1) % slideEls.length);
-    }, SLIDE_SECONDS * 1e3);
+      restartRotation();
+    }, wait);
   }
   function setText(id, text) {
     var el = document.getElementById(id);
