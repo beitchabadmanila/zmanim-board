@@ -921,25 +921,59 @@ body {
     while (m < 12 && g2abs(y, m + 1, 1) <= abs) m++;
     return [y, m, abs - g2abs(y, m, 1) + 1];
   }
-  function xhrJson(url, done) {
+  function xhrJson(url, done, onfail) {
     try {
       var x = new XMLHttpRequest();
       var finished = false;
+      var fail = function() {
+        if (finished) return;
+        finished = true;
+        if (onfail) onfail();
+      };
       x.open("GET", url, true);
       x.timeout = 8e3;
+      x.ontimeout = fail;
+      x.onerror = fail;
       x.onreadystatechange = function() {
         if (finished || x.readyState !== 4) return;
-        finished = true;
         if (x.status >= 200 && x.status < 300) {
+          finished = true;
           try {
             done(JSON.parse(x.responseText));
           } catch (e) {
+            if (onfail) onfail();
           }
+        } else {
+          fail();
         }
       };
       x.send();
     } catch (e) {
+      if (onfail) onfail();
     }
+  }
+  function refineFromZmanimIl(dateStr) {
+    xhrJson("zmanim.json", function(data) {
+      var z = data && data.data && data.data.zmanim;
+      var info = data && data.data && data.data.dateInfo;
+      var parts = dateStr.split("-");
+      var expect = parts[2] + "/" + parts[1] + "/" + parts[0];
+      if (!data || !data.success || !z || !info || info.gregorianDate !== expect) {
+        refineFromHebcal(dateStr);
+        return;
+      }
+      if (z.alotHashachar) dayState.times.alot = z.alotHashachar;
+      if (z.sofZmanKriatShma) dayState.times.shma = z.sofZmanKriatShma;
+      if (z.chatzot) dayState.times.chatzot = z.chatzot;
+      if (z.shkiaNireit) dayState.times.sunset = z.shkiaNireit;
+      if (z.tzeitHaKochavim) dayState.times.tzeit = z.tzeitHaKochavim;
+      if (z.hadlakatNerot) dayState.candles = z.hadlakatNerot;
+      if (z.tzeitShabbat) dayState.havdalah = z.tzeitShabbat;
+      if (info.parsha) dayState.parasha = info.parsha;
+      renderDynamic();
+    }, function() {
+      refineFromHebcal(dateStr);
+    });
   }
   function refineFromHebcal(dateStr) {
     xhrJson("https://www.hebcal.com/zmanim?cfg=json&latitude=" + LAT + "&longitude=" + LNG + "&date=" + dateStr, function(data) {
@@ -993,7 +1027,7 @@ body {
     for (var i = 0; i < ZMANIM.length; i++) {
       h += '<div class="zb-cell"><div class="zb-cell-label">' + esc(ZMANIM[i].label) + '</div><div class="zb-cell-time" id="zb-z-' + ZMANIM[i].key + '" dir="ltr">\u2014</div></div>';
     }
-    h += "</div></section>";
+    h += '</div><div class="zb-note">\u05D4\u05D6\u05DE\u05E0\u05D9\u05DD \u05DC\u05E4\u05D9 zmanim.org.il \u2014 \u05E9\u05D9\u05D8\u05EA \u05D0\u05D3\u05DE\u05D5\u05F4\u05E8 \u05D4\u05D6\u05E7\u05DF, \u05DE\u05E0\u05D9\u05DC\u05D4</div></section>';
     h += '<section class="zb-slide"><div class="zb-slide-title">\u05D6\u05DE\u05E0\u05D9 \u05D4\u05EA\u05E4\u05D9\u05DC\u05D5\u05EA</div>';
     h += '<div class="zb-minyan">' + minyanRows(MINYANIM) + '<div class="zb-minyan-row zb-minyan-sub"><span>\u05E9\u05D1\u05EA</span></div>' + minyanRows(MINYANIM_SHABBAT) + "</div>";
     h += '<div class="zb-note">' + esc(MINYAN_NOTE) + "</div></section>";
@@ -1088,7 +1122,7 @@ body {
     var ds = dateStrOf(manilaNow());
     if (ds !== dayState.dateStr) {
       computeDay(ds);
-      refineFromHebcal(ds);
+      refineFromZmanimIl(ds);
     }
     renderDynamic();
   }
@@ -1115,7 +1149,7 @@ body {
   showSlide(0);
   restartRotation();
   setInterval(tick, 1e3);
-  refineFromHebcal(dayState.dateStr);
+  refineFromZmanimIl(dayState.dateStr);
 })();
 
 </script>
