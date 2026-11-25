@@ -520,10 +520,13 @@ body {
   max-width: 1400px;
 }
 .zb-dedication {
-  background: rgba(230, 194, 106, 0.08);
-  border: 1px solid rgba(230, 194, 106, 0.4);
-  border-radius: 18px;
-  padding: 48px 32px;
+  position: relative;
+  box-sizing: border-box;
+  background: rgba(9, 15, 30, 0.78);
+  border: 2px solid rgba(230, 194, 106, 0.85);
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 10px rgba(9, 15, 30, 0.92), inset 0 0 0 12px rgba(230, 194, 106, 0.55), 0 6px 28px rgba(0, 0, 0, 0.6), 0 0 42px rgba(230, 194, 106, 0.12);
+  padding: 64px 48px;
   text-align: center;
 }
 .zb-dedication + .zb-dedication {
@@ -1333,7 +1336,7 @@ body,.file-card{-webkit-font-smoothing:antialiased;text-rendering:geometricPreci
     } else {
       h += '<div class="zb-dedications">';
       for (var j = 0; j < DEDICATIONS.length; j++) {
-        h += '<div class="zb-dedication"><div class="zb-dedication-name">' + esc(DEDICATIONS[j].name).replace(/^(\u05DC\u05D6\u05DB\u05D5\u05EA) /, "$1<br>") + "</div>";
+        h += '<div class="zb-dedication"><span class="zb-fc zb-fc-tl"></span><span class="zb-fc zb-fc-tr"></span><span class="zb-fc zb-fc-bl"></span><span class="zb-fc zb-fc-br"></span><div class="zb-dedication-name">' + esc(DEDICATIONS[j].name).replace(/^(\u05DC\u05D6\u05DB\u05D5\u05EA) /, "$1<br>") + "</div>";
         if (DEDICATIONS[j].line) h += '<div class="zb-dedication-line">' + esc(DEDICATIONS[j].line || "") + "</div>";
         h += "</div>";
       }
