@@ -718,6 +718,18 @@ body,.file-card{-webkit-font-smoothing:antialiased;text-rendering:geometricPreci
 .zb-slide-zmanim .zb-note{font-size:30px;}
 .zb-slide-zmanim .zb-zorn{display:block;width:640px;height:40px;opacity:.9;margin-top:6px;}
 .zb-slide-zmanim > .zb-zorn + *{margin-top:20px;}
+.zb-slide-minyan{padding:30px 50px;}
+.zb-slide-minyan > * + *{margin-top:44px;}
+.zb-slide-minyan .zb-slide-title{font-size:130px;line-height:1.1;}
+.zb-mwrap{direction:rtl;display:flex;display:-webkit-flex;width:100%;max-width:1820px;align-items:stretch;}
+.zb-mpanel{flex:1 1 0;width:50%;box-sizing:border-box;margin:0 20px;border:1px solid rgba(230,194,106,0.35);border-radius:20px;overflow:hidden;background:rgba(10,18,34,0.35);}
+.zb-mhead{text-align:center;font-family:"Frank Ruhl Libre",Georgia,serif;font-weight:700;font-size:58px;color:#e6c26a;background:rgba(230,194,106,0.13);padding:16px 10px;text-shadow:0 2px 2px rgba(0,0,0,.8);}
+.zb-slide-minyan .zb-minyan-row{padding:22px 30px;}
+.zb-slide-minyan .zb-minyan-row:nth-child(even){background:rgba(255,255,255,0.045);}
+.zb-slide-minyan .zb-minyan-row:nth-child(odd){background:transparent;}
+.zb-slide-minyan .zb-minyan-label{font-size:46px;}
+.zb-slide-minyan .zb-minyan-value{font-size:54px;}
+.zb-slide-minyan .zb-note{font-size:28px;max-width:1700px;text-align:center;}
 </style>
 </head>
 <body>
@@ -1242,8 +1254,8 @@ body,.file-card{-webkit-font-smoothing:antialiased;text-rendering:geometricPreci
       h += '<div class="zb-cell"><div class="zb-cell-label">' + esc(ZMANIM[i].label) + '</div><div class="zb-cell-time" id="zb-z-' + ZMANIM[i].key + '" dir="ltr">\u2014</div></div>';
     }
     h += '</div><div class="zb-note">\u05D4\u05D6\u05DE\u05E0\u05D9\u05DD \u05DC\u05E4\u05D9 zmanim.org.il \u2014 \u05E9\u05D9\u05D8\u05EA \u05D0\u05D3\u05DE\u05D5\u05F4\u05E8 \u05D4\u05D6\u05E7\u05DF, \u05DE\u05E0\u05D9\u05DC\u05D4</div></section>';
-    h += '<section class="zb-slide"><div class="zb-slide-title">\u05D6\u05DE\u05E0\u05D9 \u05D4\u05EA\u05E4\u05D9\u05DC\u05D5\u05EA</div>';
-    h += '<div class="zb-minyan">' + minyanRows(MINYANIM) + '<div class="zb-minyan-row zb-minyan-sub"><span>\u05E9\u05D1\u05EA</span></div>' + minyanRows(MINYANIM_SHABBAT) + "</div>";
+    h += '<section class="zb-slide zb-slide-minyan"><div class="zb-slide-title">\u05D6\u05DE\u05E0\u05D9 \u05D4\u05EA\u05E4\u05D9\u05DC\u05D5\u05EA</div>';
+    h += '<div class="zb-mwrap"><div class="zb-mpanel"><div class="zb-mhead">\u05D9\u05DE\u05D9 \u05D7\u05D5\u05DC</div>' + minyanRows(MINYANIM) + '</div><div class="zb-mpanel"><div class="zb-mhead">\u05E9\u05D1\u05EA</div>' + minyanRows(MINYANIM_SHABBAT) + "</div></div>";
     h += '<div class="zb-note">' + esc(MINYAN_NOTE) + "</div></section>";
     h += '<section class="zb-slide zb-slide-shabbat">';
     h += '<div class="zb-shabbat-title" id="zb-shabbat-title">\u05E9\u05D1\u05EA</div>';
