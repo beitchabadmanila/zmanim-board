@@ -1,0 +1,30 @@
+{
+    "success": true,
+    "data": {
+        "cityName": "Filipinas, Manila",
+        "cityNameHe": "פיליפינים, מנילה",
+        "clockType": "קבוע",
+        "zmanim": {
+            "alotHashachar": "4:06",
+            "zricha": "5:55",
+            "sofZmanKriatShma": "8:49",
+            "chatzot": "11:43",
+            "minchaGedola": "12:11",
+            "minchaKetana": "15:05",
+            "plagHaMincha": "16:17",
+            "shkiaNireit": "17:26",
+            "shkiaAmitit": "17:30",
+            "tzeitHaKochavim": "17:49",
+            "hadlakatNerot": "17:09",
+            "tzeitShabbat": "17:54"
+        },
+        "cityNameRu": "Филиппины, Манила",
+        "cityNameFr": "Philippines, Manille"
+    },
+    "dateInfo": {
+        "hebrewDate": "רביעי  טו כסלו ה'תשפז",
+        "gregorianDate": "25/11/2026",
+        "parsha": "פרשת וישלח"
+    },
+    "lastUpdated": "2026-11-25T04:15:22.936Z"
+}
