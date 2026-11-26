@@ -1416,6 +1416,11 @@ body,.file-card{-webkit-font-smoothing:antialiased;text-rendering:geometricPreci
     refineParashaFromHebcal();
   }
   var G_WEEKDAYS = ["\u05D9\u05D5\u05DD \u05E8\u05D0\u05E9\u05D5\u05DF", "\u05D9\u05D5\u05DD \u05E9\u05E0\u05D9", "\u05D9\u05D5\u05DD \u05E9\u05DC\u05D9\u05E9\u05D9", "\u05D9\u05D5\u05DD \u05E8\u05D1\u05D9\u05E2\u05D9", "\u05D9\u05D5\u05DD \u05D7\u05DE\u05D9\u05E9\u05D9", "\u05D9\u05D5\u05DD \u05E9\u05D9\u05E9\u05D9", "\u05E9\u05D1\u05EA"];
+  function wdLabel(mn) {
+    var nm = mn.getHours() * 60 + mn.getMinutes();
+    var add = (dayState.sunsetMins && nm > dayState.sunsetMins) ? 1 : 0;
+    return G_WEEKDAYS[(mn.getDay() + add) % 7];
+  }
   function esc(s) {
     return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
@@ -1544,8 +1549,8 @@ body,.file-card{-webkit-font-smoothing:antialiased;text-rendering:geometricPreci
     var mn = manilaNow();
     setText("zb-clock", clockHtml(mn));
     setText("zb-mc-hm", p2(mn.getHours()) + ":" + p2(mn.getMinutes()));
-    setText("zb-mc-d", esc(G_WEEKDAYS[mn.getDay()] + (dayState.hebrew ? " \u2022 " + dayState.hebrew : "")));
-    var dates = G_WEEKDAYS[mn.getDay()] + (dayState.hebrew ? " \u2022 " + dayState.hebrew : "") + (dayState.parasha ? " \u2022 " + dayState.parasha : "");
+    setText("zb-mc-d", esc(wdLabel(mn) + (dayState.hebrew ? " \u2022 " + dayState.hebrew : "")));
+    var dates = wdLabel(mn) + (dayState.hebrew ? " \u2022 " + dayState.hebrew : "") + (dayState.parasha ? " \u2022 " + dayState.parasha : "");
     setText("zb-dates", esc(dates));
     var spEl = document.getElementById("zb-special-wrap");
     if (spEl) {
@@ -1578,7 +1583,7 @@ body,.file-card{-webkit-font-smoothing:antialiased;text-rendering:geometricPreci
     setText("zb-shabbat-title", esc(dayState.parasha || "\u05E9\u05D1\u05EA"));
     setText("zb-candles", dayState.candles || "\u2014");
     setText("zb-havdalah", dayState.havdalah || "\u2014");
-    setText("zb-hy-date", G_WEEKDAYS[mn.getDay()] + (dayState.hebrew ? " \u2022 " + esc(dayState.hebrew) : ""));
+    setText("zb-hy-date", wdLabel(mn) + (dayState.hebrew ? " \u2022 " + esc(dayState.hebrew) : ""));
     var hyRaw = hayomyom_default[dayState.hyKey];
     var hy = hyRaw ? hyRaw.split("~").join(String.fromCharCode(10)) : hyRaw;
     setText("zb-hy-body", esc(hy || "\u05D0\u05D9\u05DF \u05E8\u05E9\u05D5\u05DE\u05D4 \u05D6\u05DE\u05D9\u05E0\u05D4 \u05DC\u05D4\u05D9\u05D5\u05DD."));
