@@ -1288,7 +1288,7 @@ body,.file-card{-webkit-font-smoothing:antialiased;text-rendering:geometricPreci
     var mn = manilaNow();
     var nowMins = mn.getHours() * 60 + mn.getMinutes();
     var abs = g2abs(y, m, d);
-    // Hebrew date follows the civil day (rolls at 00:00 Manila), per Israel
+    if (nowMins > dayState.sunsetMins) abs += 1;
     var h = abs2hebrew(abs);
     dayState.hebrew = hebrewDateStr(h);
     dayState.special = specialDays(h, abs);
@@ -1397,7 +1397,7 @@ body,.file-card{-webkit-font-smoothing:antialiased;text-rendering:geometricPreci
     var mn = manilaNow();
     var nowMins = mn.getHours() * 60 + mn.getMinutes();
     var abs = g2abs(+parts[0], +parts[1], +parts[2]);
-    // Hebrew date follows the civil day (rolls at 00:00 Manila), per Israel
+    if (nowMins > dayState.sunsetMins) abs += 1;
     var h = abs2hebrew(abs);
     dayState.hebrew = hebrewDateStr(h);
     dayState.special = specialDays(h, abs);
